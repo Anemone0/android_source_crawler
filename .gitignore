@@ -2,3 +2,4 @@ zips/*
 .idea
 *.pyc
 *.zip
+items.json

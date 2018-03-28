@@ -1,6 +1,2 @@
-{"url": ["https://github.com/owncloud/android/archive/master.zip"], "name": "/owncloud/android"}
-{"url": ["https://github.com/owncloud/android/archive/master.zip"], "name": "/owncloud/android"}
-{"url": ["https://github.com/android/android-ktx/archive/master.zip"], "name": "/android/android-ktx"}
-{"url": ["https://github.com/LMAX-Exchange/disruptor/archive/master.zip"], "name": "/LMAX-Exchange/disruptor"}
-{"url": ["https://github.com/dgraph-io/dgraph4j/archive/master.zip"], "name": "/dgraph-io/dgraph4j"}
-{"url": ["https://github.com/ReactiveX/RxKotlin/archive/2.x.zip"], "name": "/ReactiveX/RxKotlin"}
+{"url": ["https://github.com/owncloud/android/archive/master.zip"], "name": "/owncloud/android", "download_details": [{"url": "https://github.com/owncloud/android/archive/master.zip", "path": "66/66ae5e33c6c403ec5088768af7383d694b2645af.zip", "checksum": "fbe8fbc6abda4b02938f22f31ade3c52"}]}
+{"url": ["https://github.com/nextcloud/android/archive/master.zip"], "name": "/nextcloud/android", "download_details": [{"url": "https://github.com/nextcloud/android/archive/master.zip", "path": "b4/b4c50d495bf2e6549db7e26d026b7022025cc120.zip", "checksum": "c2096cbf9dbda3d1b29c9a2fc00fda7d"}]}

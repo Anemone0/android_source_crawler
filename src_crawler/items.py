@@ -13,4 +13,4 @@ class SrcCrawlerItem(scrapy.Item):
     # name = scrapy.Field()
     name = scrapy.Field()
     url = scrapy.Field()
-    apk_path = scrapy.Field()
+    download_details = scrapy.Field()

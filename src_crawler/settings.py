@@ -73,7 +73,7 @@ FILES_STORE = os.path.join(os.path.split(os.path.realpath(__file__))[0], "zips")
 # 下载链接对应item里的url字段
 FILES_URLS_FIELD = 'url'
 # 下载后文件路径对应item里的path字段
-FILES_RESULT_FIELD = 'apk_details'
+FILES_RESULT_FIELD = 'download_details'
 # 允许重定向
 MEDIA_ALLOW_REDIRECTS = True
 # 使用FilesPipelin
