@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding=utf-8 -*-
+from lxml import etree
+
 from scrapy.spiders import CrawlSpider
 import os
 import src_crawler.settings as settings
@@ -16,12 +18,13 @@ class GitHubSpider(CrawlSpider):
     start_urls = ["https://github.com/owncloud/android"]
 
     def parse(self, response):
-        # 传递watch url，star url，fork url
+        # 传递star url
+        xpath_star_url = '//a[contains(@aria-label,"starred this repository")]/@href'
+        star_url = response.xpath(xpath_star_url).extract()[0]
+        yield Request(base_url + star_url, callback=self.parse_repo_stars)
 
         # 检查item正确性
-        # print response.body
         valid = self.check_valid(response)
-
         if valid:
             xpath_repo_name = '//strong[contains(@itemprop,"name")]/a/@href'
             xpath_download_url = '//a[contains(@data-ga-click,"download")]/@href'
@@ -29,12 +32,10 @@ class GitHubSpider(CrawlSpider):
             zip_url = base_url + response.xpath(xpath_download_url).extract()[0]
 
             item = SrcCrawlerItem()
-
             item["name"] = repo_name
             item["url"] = [zip_url]
 
             yield item
-            # yield Request(zip_url, callback=self.download_repo)
 
     def check_valid(self, response):
         xpath_files = '//tr[contains(@class,"js-navigation-item")]/td[contains(@class,"content")]/span/a/text()'
@@ -45,14 +46,46 @@ class GitHubSpider(CrawlSpider):
                 return False
         return True
 
-    def parse_watch(self, response):
-        pass
+    def parse_repo_stars(self, response):
+        """
+        获取所有的star用户，返回每个用户的个人stars页面
+        :param response:
+        :return:
+        """
+        xpath_developers = '//h3[contains(@class,"follow-list-name")]//a/@href'
+        developers_urls = response.xpath(xpath_developers).extract()
+        for developer_url in developers_urls:
+            yield Request(base_url + developer_url + "?tab=stars", callback=self.parse_developer_stars)
 
-    def parse_star(self, response):
-        pass
+    def parse_developer_stars(self, response):
+        """
+        获取每一页面的star仓库
+        :param response:
+        :return:
+        """
+        languages = ["Java", "Kotlin"]
+        # 枚举每一个项目，看语言是java和kotlin的
+        xpath_divs = '//div[contains(@class,"col-12 d-block width-full py-4 border-bottom")]'
+        xpath_lang = '//span[contains(@itemprop,"programmingLanguage")]/text()'
+        xpath_href = '//h3/a/@href'
+        for each in response.xpath(xpath_divs).extract():
+            xml_selector = etree.HTML(each)
+            lang_arr = xml_selector.xpath(xpath_lang)
+            if len(lang_arr) == 0:
+                continue
+            lang = lang_arr[0].replace("\n", "").strip()
+            if lang not in languages:
+                continue
+            repo_url=xml_selector.xpath(xpath_href)[0]
+            yield Request(base_url+repo_url, callback=self.parse)
 
-    def parse_fork(self, response):
-        pass
+
+        # 跳转到下一页
+        xpath_next = '//a[contains(@class,"next_page")]/@href'
+        next_url = response.xpath(xpath_next).extract()
+        if len(next_url) >= 1:
+            next_url = next_url[0]
+            yield Request(base_url + next_url, callback=self.parse_developer_stars)
 
     def download_repo(self, response):
         file_name = response.url.split('/')[4]
