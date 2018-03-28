@@ -27,4 +27,4 @@ class GitFilePipeline(FilesPipeline):
     def file_path(self, request, response=None, info=None):
         scrapy_pipline_path = super(GitFilePipeline, self).file_path(request, response, info)
         _dir, _file = scrapy_pipline_path.split("/")
-        return os.path.join(_file[:2], _file)
+        return os.path.join(_file[:1], _file)

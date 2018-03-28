@@ -40,7 +40,7 @@ class GitHubSpider(CrawlSpider):
     def check_valid(self, response):
         xpath_files = '//tr[contains(@class,"js-navigation-item")]/td[contains(@class,"content")]/span/a/text()'
         files = response.xpath(xpath_files).extract()
-        gradle_files = ["gradlew", "src", "settings.gradle"]
+        gradle_files = ["gradlew", "app", "settings.gradle"]
         for each in gradle_files:
             if each not in files:
                 return False
