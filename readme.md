@@ -5,7 +5,7 @@
 
 ## 用法
 ```bash
-scarpy main.py
+main.py
 ```
 
 ## 抓取结果
